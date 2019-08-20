@@ -50,8 +50,8 @@ def main():
         score = row('td', class_='freeCount')[0].text.strip()
         titles.append(title)
         scores.append(score)
-    print("titles:")
-    print(titles)
+    #print("titles:")
+    #print(titles)
     print("scores:")
     print(scores)
     if titles != titles_for_comparison:
@@ -65,10 +65,12 @@ def main():
     # write/append to .csv-file
     filename = date + ".csv"
     print("filename:", filename)
-    exists = os.path.exists(filename)
+    filename_long = "data/" + filename
+    print("time:", time)
+    exists = os.path.exists(filename_long)
     print("exists:", exists)
 
-    writer = csv.writer(open(filename, "a"))
+    writer = csv.writer(open(filename_long, "a"))
     if not exists:
         writer.writerow(titles)
     writer.writerow(scores)
