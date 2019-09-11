@@ -23,3 +23,22 @@ History of parking deck data
   python3 auto_commit.py
   ```
 
+# citizen-center-muenster
+History of waiting time data in the citizen center of Muenster
+
+### Steps for reading the waiting time data from [here](https://www.muenster.de/stadt/buergeramt/mobil-wartezeit.shtml) and writing the data into a .csv file:
+* Install dependencies as described above, if not already done.
+* Call the read_waiting_time_data script:
+  ```
+  python3 read_waiting_time_data.py
+  ```
+
+### Steps for commiting the .csv file into the "data_citizen_center" folder on GitHub:
+* Generate a "personal access token" on GitHub as described above, if not already done.
+* Generate a file "config.py" as described above, if not already done.
+* Switch the remote URL to HTTPS, if not already done.
+* Call the auto_commit script:
+  ```
+  python3 auto_commit.py
+  ```
+
