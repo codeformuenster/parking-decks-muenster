@@ -17,13 +17,16 @@ def main():
     yesterday = now - datetime.timedelta(days=1)
     date = yesterday.strftime('%Y-%m-%d')
     filename = date + ".csv"
+    # print("Committing {}".format(filename))
     filename_long_parkleitsystem = "data/" + filename
     filename_long_waiting_time = "data_citizen_center/" + filename
-    add_command = 'git add ' + filename_long_parkleitsystem + ' ' + filename_long_waiting_time
+    add_command1 = 'git add ' + filename_long_parkleitsystem
+    add_command2 = 'git add ' + filename_long_waiting_time
     commit_command = 'git commit -m "added parkleitsystem and waiting time data files"'
     push_command = 'git push https://' + cfg.token + '@github.com/codeformuenster/parking-decks-muenster.git'
 
-    os.system(add_command)
+    os.system(add_command1)
+    os.system(add_command2)
     os.system(commit_command)
     os.system(push_command)
 
