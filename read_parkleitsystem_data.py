@@ -21,46 +21,69 @@ def main():
     time = now.strftime('%H:%M')
 
     # connect with website
-    result = requests.get('https://www.stadt-muenster.de/tiefbauamt/parkleitsystem')
+    result = requests.get('https://www.stadt-muenster.de/ms/tiefbauamt/pls/PLS-INet.xml', timeout=60)
+    result.encoding = result.apparent_encoding
     if result.status_code != 200:
         print("Request failed with status code: {:d}!".format(result.status_code), file=sys.stderr)
 
     # get parking table
-    soup = BeautifulSoup(result.text, 'html.parser')
-    parking_table = soup.find('div', id='parkingList')('table')
-    parking_list = None
-    for table in parking_table:
-        parking_list = table('tr')[1:]
+    soup = BeautifulSoup(result.content, 'xml')
+    parking_list = soup.find('parkhaeuser')('parkhaus')
 
-    titles_for_comparison = ['Datum und Uhrzeit', 'PH Theater', \
-                             'PP Hörsterplatz', 'PH Alter Steinweg', \
-                             'Busparkplatz', 'PP Schlossplatz Nord', \
-                             'PP Schlossplatz Süd', 'PH Aegidii', \
-                             'PP Georgskommende', 'PH Münster Arkaden', \
-                             'PH Karstadt', 'PH Stubengasse', \
-                             'PH Bremer Platz', 'PH Engelenschanze', \
-                             'PH Bahnhofstraße', 'PH Cineplex', 'PH Stadthaus 3']
+    titles_mapping = {
+        'Parkhaus PH Coesfelder Kreuz': 'PH Coesfelder Kreuz',
+        'Parkhaus Theater': 'PH Theater',
+        'Parkplatz Hörster Platz': 'PP Hörsterplatz',
+        'Parkhaus Alter Steinweg': 'PH Alter Steinweg',
+        'Parkplatz Busparkplatz': 'Busparkplatz',
+        'Parkplatz Schlossplatz Nord': 'PP Schlossplatz Nord',
+        'Parkplatz Schlossplatz Süd': 'PP Schlossplatz Süd',
+        'Parkhaus Aegidii': 'PH Aegidii',
+        'Parkplatz Georgskommende': 'PP Georgskommende',
+        'Parkhaus Münster-Arkaden': 'PH Münster Arkaden',
+        'Parkhaus Karstadt': 'PH Karstadt',
+        'Parkhaus Stubengasse': 'PH Stubengasse',
+        'Parkhaus Bremer Platz': 'PH Bremer Platz',
+        'Parkhaus Engelenschanze': 'PH Engelenschanze',
+        'Parkhaus Bahnhofstraße': 'PH Bahnhofstraße',
+        'Parkhaus Cineplex': 'PH Cineplex',
+        'Parkhaus PH Stadthaus 3': 'PH Stadthaus 3'
+    }
+
     titles = []
     scores = []
+    capacities = []
     titles.append("Datum und Uhrzeit")
     scores.append(date + " " + time)
+    capacities.append("Anzahl Parkplätze gesamt")
 
+
+    scores_cache = {}
+    gesamt_cache = {}
     for row in parking_list:
-        title = row('td', class_='name')[0].text.strip()
-        score = row('td', class_='freeCount')[0].text.strip()
-        titles.append(title)
-        scores.append(score)
-    #print("titles:")
-    #print(titles)
+        title = row.bezeichnung.text.strip()
+        score = int(row.frei.text.strip())
+        status = row.status.text.strip()
+        capa = row.gesamt.text.strip()
+        if status != "frei":
+            score = status[0:3]
+        if title in titles_mapping:
+            scores_cache[title] = score
+            gesamt_cache[title] = capa
+        else:
+            print("UNKNOWN TITLE " + title)
+            raise ValueError("beep")
+
+    for key, val in titles_mapping.items():
+        titles.append(val)
+        scores.append(scores_cache[key])
+        capacities.append(f'({gesamt_cache[key]})')
+
     print("scores:")
     print(scores)
-    if titles != titles_for_comparison:
-        if len(titles) > len(titles_for_comparison):
-            print("Number of parking decks increased!", file=sys.stderr)
-        elif len(titles) < len(titles_for_comparison):
-            print("Number of parking decks decreased!", file=sys.stderr)
-        else:
-            print("Order or of parking decks changed!", file=sys.stderr)
+    print("titles:")
+    print(titles)
+
 
     # write/append to .csv-file
     filename = date + ".csv"
@@ -70,9 +93,10 @@ def main():
     exists = os.path.exists(filename_long)
     print("exists:", exists)
 
-    writer = csv.writer(open(filename_long, "a"))
+    writer = csv.writer(open(filename_long, "a"), quoting=csv.QUOTE_NONNUMERIC)
     if not exists:
         writer.writerow(titles)
+        writer.writerow(capacities)
     writer.writerow(scores)
 
 
