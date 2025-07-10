@@ -31,7 +31,7 @@ def main():
     parking_list = soup.find('parkhaeuser')('parkhaus')
 
     titles_mapping = {
-        'Parkhaus PH Coesfelder Kreuz': 'PH Coesfelder Kreuz',
+        'Parkhaus Coesfelder Kreuz': 'PH Coesfelder Kreuz',
         'Parkhaus Theater': 'PH Theater',
         'Parkplatz Hörster Platz': 'PP Hörsterplatz',
         'Parkhaus Alter Steinweg': 'PH Alter Steinweg',
@@ -41,13 +41,16 @@ def main():
         'Parkhaus Aegidii': 'PH Aegidii',
         'Parkplatz Georgskommende': 'PP Georgskommende',
         'Parkhaus Münster-Arkaden': 'PH Münster Arkaden',
-        'Parkhaus Karstadt': 'PH Karstadt',
+        'Parkhaus Galeria': 'PH Karstadt',
         'Parkhaus Stubengasse': 'PH Stubengasse',
         'Parkhaus Bremer Platz': 'PH Bremer Platz',
         'Parkhaus Engelenschanze': 'PH Engelenschanze',
         'Parkhaus Bahnhofstraße': 'PH Bahnhofstraße',
         'Parkhaus Cineplex': 'PH Cineplex',
-        'Parkhaus PH Stadthaus 3': 'PH Stadthaus 3'
+        'Parkhaus Stadthaus 3': 'PH Stadthaus 3',
+        'Parkplatz Hafenmarkt': 'PP Hafenmarkt',
+        'Tiefgarage Hafenmarkt': 'TG Hafenmarkt'
+
     }
 
     titles = []
