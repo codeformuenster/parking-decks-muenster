@@ -1,6 +1,22 @@
 # parking-decks-muenster
 History of parking deck data
 
+## Lizenz
+Empfohlene Attribution:
+"Parkhausbelegung Stadt Münster (dl-de/by-2-0), historisiert von Code For Münster"
+
+```
+Originaldatenquelle:
+Stadt Münster – Parkhausbelegung aktuell
+Lizenz: Datenlizenz Deutschland – Namensnennung 2.0
+https://opendata.stadt-muenster.de/dataset/parkleitsystem-parkhausbelegung-aktuell
+
+This project extends the original data by collecting snapshots
+every 5 minutes and storing them historically.
+```
+
+## How to generate the data
+
 ### Steps for reading the parkleitsystem data from [here](https://www.stadt-muenster.de/tiefbauamt/parkleitsystem) and writing the data into a .csv file:
 * Install dependencies, i.e. the python package BeautifulSoup:
   ```
