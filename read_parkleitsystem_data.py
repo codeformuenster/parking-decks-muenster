@@ -49,8 +49,8 @@ def main():
         'Parkhaus Cineplex': 'PH Cineplex',
         'Parkhaus Stadthaus 3': 'PH Stadthaus 3',
         'Parkplatz Hafenmarkt': 'PP Hafenmarkt',
-        'Tiefgarage Hafenmarkt': 'TG Hafenmarkt'
-
+        'Tiefgarage Hafenmarkt': 'TG Hafenmarkt',
+        'Halle Münsterland P1': 'Halle Münsterland P1'
     }
 
     titles = []
